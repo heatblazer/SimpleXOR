@@ -30,7 +30,7 @@ size_t privateKeyLength;
 char* xor_decryptBufferByKey(const char *buffer, const char *key) {
     privateBuffLength = privateBuffLength == 0 ? xor_auxStrlen(buffer) : privateBuffLength;
     privateKeyLength = privateKeyLength == 0 ? xor_auxStrlen(key) : privateKeyLength;
-    printf("#1: length is :%d key is %d\n", privateBuffLength, privateKeyLength);
+
     char* tempBuffer = (char*)malloc(sizeof(buffer) * privateBuffLength);
     char* start = tempBuffer;
     safeDelete[heapIterator++] = tempBuffer;
@@ -39,7 +39,7 @@ char* xor_decryptBufferByKey(const char *buffer, const char *key) {
     char c;
     while ( i < privateBuffLength ) {
 #ifdef PRESERVE_HEADER
-        if (i==0 || i==1 || i==2) c = buffer[i];
+        if ( i < 5 ) c = buffer[i];
 #endif
         c = buffer[i] ^ key[i%privateKeyLength];
         /* this check is important, since XOR can turn a charcter into '0'
@@ -51,7 +51,7 @@ char* xor_decryptBufferByKey(const char *buffer, const char *key) {
     return start;
 }
 
-/* programme is responsible to call the cleanup()
+/* programmer is responsible to call the cleanup()
     the final user however is not.
 */
 int xor_cleanup() {
